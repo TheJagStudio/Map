@@ -1,0 +1,378 @@
+<!-- create base html file-->
+<html>
+    <head>
+        <title>Canvas</title>
+        <style>
+            html, body
+            {
+                height: 100%;
+                margin: 0;
+                padding: 0px;
+                overflow: hidden;
+            }
+            #canvas
+            {
+                width: 100%;
+                height: 100%;
+                background: #D4D4D5;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id="canvas"></canvas>
+        <script type="text/javascript">
+            let canvas = document.getElementById("canvas")
+let ctx = canvas.getContext('2d')
+
+let cameraOffset = { x: window.innerWidth/2, y: window.innerHeight/2 }
+let cameraZoom = 0.1
+let MAX_ZOOM = 5
+let MIN_ZOOM = 0.1
+let SCROLL_SENSITIVITY = 0.00005
+let coor = [
+    [
+        -920,
+        -640
+    ],
+    [
+        620,
+        -660
+    ],
+    [
+        600,
+        -1920
+    ],
+    [
+        -1000,
+        -1900
+    ],
+    [
+        -470,
+        -1900
+    ],
+    [
+        -1007.1428922692135,
+        278.5714382872293
+    ],
+    [
+        -1020.0000355747779,
+        1152.8571830656103
+    ],
+    [
+        -1581.4286265844246,
+        274.28572385204114
+    ],
+    [
+        -3129.9999999999995,
+        229.99999999999994
+    ],
+    [
+        -3119.9999999999995,
+        -999.9999999999998
+    ],
+    [
+        -3149.9999999999995,
+        -2219.9999999999995
+    ],
+    [
+        -3459.9999999999995,
+        -2219.9999999999995
+    ],
+    [
+        -3519.999999999999,
+        1309.9999999999998
+    ],
+    [
+        -3119.9999999999995,
+        1279.9999999999998
+    ],
+    [
+        -3519.999999999999,
+        -1679.9999999999998
+    ],
+    [
+        -3159.9999999999995,
+        -1669.9999999999998
+    ],
+    [
+        -3479.9999999999995,
+        -2619.9999999999995
+    ],
+    [
+        -2229.9999999999995,
+        -2209.9999999999995
+    ],
+    [
+        -1039.9999999999998,
+        -2189.9999999999995
+    ],
+    [
+        -1039.9999999999998,
+        -2619.9999999999995
+    ],
+    [
+        -1009.9999999999998,
+        -3509.9999999999995
+    ],
+    [
+        -1019.9999999999998,
+        -3269.9999999999995
+    ],
+    [
+        -269.99999999999994,
+        -3319.9999999999995
+    ],
+    [
+        -269.99999999999994,
+        -3499.9999999999995
+    ],
+    [
+        59.999999999999986,
+        -3539.999999999999
+    ],
+    [
+        39.99999999999999,
+        -3339.9999999999995
+    ],
+    [
+        0,
+        -3149.9999999999995
+    ],
+    [
+        759.9999999999999,
+        -3129.9999999999995
+    ],
+    [
+        759.9999999999999,
+        -3569.999999999999
+    ],
+    [
+        759.9999999999999,
+        -2629.9999999999995
+    ],
+    [
+        59.999999999999986,
+        -2589.9999999999995
+    ],
+    [
+        -479.9999999999999,
+        -2579.9999999999995
+    ],
+    [
+        2519.9999999999995,
+        -2659.9999999999995
+    ],
+    [
+        2539.9999999999995,
+        -3459.9999999999995
+    ],
+    [
+        3459.9999999999995,
+        -3149.9999999999995
+    ],
+    [
+        3479.9999999999995,
+        -439.9999999999999
+    ],
+    [
+        3459.9999999999995,
+        3089.9999999999995
+    ],
+    [
+        1719.9999999999998,
+        3119.9999999999995
+    ],
+    [
+        1639.9999999999998,
+        2789.9999999999995
+    ],
+    [
+        1679.9999999999998,
+        3439.9999999999995
+    ],
+    [
+        1179.9999999999998,
+        2799.9999999999995
+    ],
+    [
+        1119.9999999999998,
+        2209.9999999999995
+    ],
+    [
+        -1209.9999999999998,
+        1709.9999999999998
+    ],
+    [
+        -1199.9999999999998,
+        2679.9999999999995
+    ],
+    [
+        -1529.9999999999998,
+        2759.9999999999995
+    ],
+    [
+        -1579.9999999999998,
+        1689.9999999999998
+    ],
+    [
+        -1559.9999999999998,
+        3289.9999999999995
+    ],
+    [
+        -3549.999999999999,
+        3249.9999999999995
+    ],
+    [
+        -99.99999999999999,
+        2209.9999999999995
+    ]
+]
+let temp = [];
+var points = 0;
+function draw()
+{
+    canvas.width = window.innerWidth
+    canvas.height = window.innerHeight
+    // Translate to the canvas centre before zooming - so you'll always zoom on what you're looking directly at
+    ctx.translate( window.innerWidth / 2, window.innerHeight / 2 )
+    ctx.scale(cameraZoom, cameraZoom)
+    ctx.translate( -window.innerWidth / 2 + cameraOffset.x, -window.innerHeight / 2 + cameraOffset.y )
+    ctx.clearRect(0,0, window.innerWidth, window.innerHeight)   
+    ctx.fillStyle = "#eecc77"
+    drawImage(-3840,-3840,20,20) 
+    for (let i = 0; i < coor.length; i++) {
+        temp = coor[i]
+        drawCircle(temp[0],temp[1], 50)
+    }
+    requestAnimationFrame( draw )
+}
+// Gets the relevant location from a mouse or single touch event
+function getEventLocation(e)
+{
+    if (e.touches && e.touches.length == 1)
+    {
+        return { x:e.touches[0].clientX, y: e.touches[0].clientY }
+    }
+    else if (e.clientX && e.clientY)
+    {
+        return { x: e.clientX, y: e.clientY }        
+    }
+}
+
+function drawImage(x, y, width, height)
+{
+    var img = new Image();
+    img.src = 'map.png';
+    ctx.drawImage(img, x, y);
+}
+function drawCircle(x, y, radius)
+{
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, 2 * Math.PI, false);
+    ctx.fillStyle = '#0dff05';
+    ctx.fill();  
+    ctx.lineWidth = 20;
+    ctx.strokeStyle = '#003300';
+    ctx.stroke();
+}
+
+//function printMousePos(e) {
+//    coor[points]= [(getEventLocation(e).x - cameraOffset.x)/cameraZoom,(getEventLocation(e).y - cameraOffset.y)/cameraZoom];
+//    console.log(cameraOffset.x,cameraOffset.y);
+//    points++;
+// }
+// canvas.addEventListener("click", printMousePos);
+let isDragging = false
+let dragStart = { x: 0, y: 0 }
+
+function onPointerDown(e)
+{
+    isDragging = true
+    dragStart.x = getEventLocation(e).x/cameraZoom - cameraOffset.x
+    dragStart.y = getEventLocation(e).y/cameraZoom - cameraOffset.y
+}
+
+function onPointerUp(e)
+{
+    isDragging = false
+    initialPinchDistance = null
+    lastZoom = cameraZoom
+}
+
+function onPointerMove(e)
+{
+    if (isDragging)
+    {
+        cameraOffset.x = getEventLocation(e).x/cameraZoom - dragStart.x
+        cameraOffset.y = getEventLocation(e).y/cameraZoom - dragStart.y
+    }
+}
+
+function handleTouch(e, singleTouchHandler)
+{
+    if ( e.touches.length == 1 )
+    {
+        singleTouchHandler(e)
+    }
+    else if (e.type == "touchmove" && e.touches.length == 2)
+    {
+        isDragging = false
+        handlePinch(e)
+    }
+}
+
+let initialPinchDistance = null
+let lastZoom = cameraZoom
+
+function handlePinch(e)
+{
+    e.preventDefault()
+    
+    let touch1 = { x: e.touches[0].clientX, y: e.touches[0].clientY }
+    let touch2 = { x: e.touches[1].clientX, y: e.touches[1].clientY }
+    let currentDistance = (touch1.x - touch2.x)**2 + (touch1.y - touch2.y)**2
+    
+    if (initialPinchDistance == null)
+    {
+        initialPinchDistance = currentDistance
+    }
+    else
+    {
+        adjustZoom( null, currentDistance/initialPinchDistance )
+    }
+}
+
+function adjustZoom(zoomAmount, zoomFactor)
+{
+    if (!isDragging)
+    {
+        if (zoomAmount)
+        {
+            cameraZoom += zoomAmount
+        }
+        else if (zoomFactor)
+        {
+            console.log(zoomFactor)
+            cameraZoom = zoomFactor*lastZoom
+        }
+        
+        cameraZoom = Math.min( cameraZoom, MAX_ZOOM )
+        cameraZoom = Math.max( cameraZoom, MIN_ZOOM )
+        
+        console.log(zoomAmount)
+    }
+}
+
+canvas.addEventListener('mousedown', onPointerDown)
+canvas.addEventListener('touchstart', (e) => handleTouch(e, onPointerDown))
+canvas.addEventListener('mouseup', onPointerUp)
+canvas.addEventListener('touchend',  (e) => handleTouch(e, onPointerUp))
+canvas.addEventListener('mousemove', onPointerMove)
+canvas.addEventListener('touchmove', (e) => handleTouch(e, onPointerMove))
+canvas.addEventListener( 'wheel', (e) => adjustZoom(e.deltaY*SCROLL_SENSITIVITY))
+
+// Ready, set, go
+draw()
+        </script>
+    </body>
+</html>

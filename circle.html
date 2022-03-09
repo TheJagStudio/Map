@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+
+<body>
+	<canvas id="canvas" width="400" height="200"
+		style="border:2px solid #000000">
+	</canvas>
+
+	<script>
+        function drawCircle(x, y, radius)
+{
+    ctx.beginPath();
+    ctx.arc(x-radius, y-radius, radius, 0, 2 * Math.PI, false);
+    ctx.fillStyle = '#0dff05';
+    ctx.fill();  
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = '#003300';
+    ctx.stroke();
+}
+let canvas = document.getElementById("canvas")
+let ctx = canvas.getContext('2d')
+function printMousePos(event) {
+    drawCircle(event.clientX, event.clientY, 10);
+}
+document.addEventListener("click", printMousePos);
+	</script>
+</body>
+
+</html>
